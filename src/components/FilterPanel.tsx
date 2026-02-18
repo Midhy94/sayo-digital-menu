@@ -26,7 +26,10 @@ const sortOptions: { value: MenuFilters['sortBy']; key: string }[] = [
   { value: 'price-desc', key: 'sortPriceDesc' },
 ]
 
-function getFilterLabel(t: (key: string) => string, filters: MenuFilters): string[] {
+function getFilterLabel(
+  t: (key: string, options?: any) => string,
+  filters: MenuFilters,
+): string[] {
   const labels: string[] = []
   if (filters.diet !== 'all') {
     labels.push(t(`filters.${filters.diet === 'vegetarian' ? 'vegetarian' : 'nonVegetarian'}`))
@@ -198,46 +201,45 @@ export function FilterPanel() {
                 </button>
               </div>
             </div>
-          </div>
-
-          <div className="filter-panel__results-row">
-            <div className="filter-panel__results">
-              <span className="filter-panel__results-number">{filteredDishes.length}</span>
-              <span className="filter-panel__results-label">{t('nav.menu').toLowerCase()}</span>
-            </div>
-            <div className="filter-panel__view-toggle" role="group" aria-label={t('filters.viewGrid')}>
-              <button
-                type="button"
-                className={`filter-panel__view-btn ${viewMode === 'grid' ? 'filter-panel__view-btn--active' : ''}`}
-                onClick={() => setViewMode('grid')}
-                aria-pressed={viewMode === 'grid'}
-                aria-label={t('filters.viewGrid')}
-                title={t('filters.viewGrid')}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="14" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                  <rect x="14" y="14" width="7" height="7" rx="1" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className={`filter-panel__view-btn ${viewMode === 'list' ? 'filter-panel__view-btn--active' : ''}`}
-                onClick={() => setViewMode('list')}
-                aria-pressed={viewMode === 'list'}
-                aria-label={t('filters.viewList')}
-                title={t('filters.viewList')}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="8" y1="6" x2="21" y2="6" />
-                  <line x1="8" y1="12" x2="21" y2="12" />
-                  <line x1="8" y1="18" x2="21" y2="18" />
-                  <line x1="3" y1="6" x2="3.01" y2="6" />
-                  <line x1="3" y1="12" x2="3.01" y2="12" />
-                  <line x1="3" y1="18" x2="3.01" y2="18" />
-                </svg>
-              </button>
+            <div className="filter-panel__section filter-panel__section--results">
+              <div className="filter-panel__results">
+                <span className="filter-panel__results-number">{filteredDishes.length}</span>
+                <span className="filter-panel__results-label">{t('nav.menu').toLowerCase()}</span>
+              </div>
+              <div className="filter-panel__view-toggle" role="group" aria-label={t('filters.viewGrid')}>
+                <button
+                  type="button"
+                  className={`filter-panel__view-btn ${viewMode === 'grid' ? 'filter-panel__view-btn--active' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                  aria-pressed={viewMode === 'grid'}
+                  aria-label={t('filters.viewGrid')}
+                  title={t('filters.viewGrid')}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className={`filter-panel__view-btn ${viewMode === 'list' ? 'filter-panel__view-btn--active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                  aria-pressed={viewMode === 'list'}
+                  aria-label={t('filters.viewList')}
+                  title={t('filters.viewList')}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="8" y1="6" x2="21" y2="6" />
+                    <line x1="8" y1="12" x2="21" y2="12" />
+                    <line x1="8" y1="18" x2="21" y2="18" />
+                    <line x1="3" y1="6" x2="3.01" y2="6" />
+                    <line x1="3" y1="12" x2="3.01" y2="12" />
+                    <line x1="3" y1="18" x2="3.01" y2="18" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>

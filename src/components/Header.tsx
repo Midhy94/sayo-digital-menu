@@ -24,7 +24,7 @@ const LOGOS = {
 export function Header() {
   const { t } = useTranslation()
   const { toggleTheme, isDark } = useTheme()
-  const { language, setLanguage } = useLanguage()
+  const { language } = useLanguage()
   const { setCategory, filters } = useMenu()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 

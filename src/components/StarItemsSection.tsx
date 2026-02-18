@@ -34,7 +34,6 @@ const item = {
 
 export function StarItemsSection() {
   const { t } = useTranslation()
-  const { language } = useLanguage()
   const { dishes, openDishModal } = useMenu()
   const scrollRef = useRef<HTMLDivElement>(null)
 
