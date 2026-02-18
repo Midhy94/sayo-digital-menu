@@ -28,7 +28,8 @@
   --sayo-gold: #427037;
   --sayo-error: #b84a4a;
   --sayo-success: #427037;
-  --sayo-header-bg: rgba(255, 255, 255, 0.88);
+  /* Match the 80% white you requested for light mode header */
+  --sayo-header-bg: rgb(255 255 255 / 80%);
   --sayo-on-accent: #FCF1E7;
 }
 

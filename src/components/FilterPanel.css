@@ -2,8 +2,8 @@
   position: sticky;
   top: 56px;
   z-index: calc(var(--z-sticky) - 1);
-  /* Glassy background similar to header */
-  background: rgb(255 255 255 / 67%);
+  /* Default: glassy background (dark theme) */
+  background: var(--ios-glass-bg);
   backdrop-filter: blur(var(--ios-blur-lg));
   -webkit-backdrop-filter: blur(var(--ios-blur-lg));
   /* Subtle glass border and soft rounded bottom edge */
@@ -11,6 +11,11 @@
   border-top: none;
   border-radius: 0 0 var(--ios-radius-xl) var(--ios-radius-xl);
   padding: var(--ios-space-4) var(--ios-space-5);
+}
+
+/* Light theme: slightly stronger white glass, as requested */
+[data-theme="light"] .filter-panel {
+  background: rgb(255 255 255 / 67%);
 }
 
 .filter-panel__inner {

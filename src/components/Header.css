@@ -6,7 +6,7 @@
 }
 
 .header.navbar-glass {
-  background: rgb(255 255 255 / 80%);
+  background: var(--sayo-header-bg);
   backdrop-filter: blur(var(--ios-blur-lg));
   -webkit-backdrop-filter: blur(var(--ios-blur-lg));
   border-bottom-color: var(--ios-glass-border);
