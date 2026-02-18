@@ -98,7 +98,8 @@
   "language": {
     "en": "English",
     "ar": "العربية",
-    "ariaLabel": "اللغة"
+    "ariaLabel": "اللغة",
+    "choose": "اختر لغتك"
   },
   "theme": {
     "dark": "داكن",

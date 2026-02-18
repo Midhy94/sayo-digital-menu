@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMenu } from '../contexts/MenuContext'
@@ -76,6 +76,15 @@ export function FilterPanel() {
     filters.chefSpecialOnly
 
   const activeFilterLabels = getFilterLabel(t, filters)
+
+  // Allow other components (e.g. mobile bottom bar) to open the drawer
+  useEffect(() => {
+    const handler = () => setDrawerOpen(true)
+    document.addEventListener('sayo-open-filters' as any, handler)
+    return () => {
+      document.removeEventListener('sayo-open-filters' as any, handler)
+    }
+  }, [])
 
   return (
     <>

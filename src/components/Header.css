@@ -3,6 +3,7 @@
   top: 0;
   z-index: var(--z-sticky);
   border-bottom: 1px solid transparent;
+  transition: transform var(--ios-duration-normal) var(--ease-out);
 }
 
 .header.navbar-glass {
@@ -127,6 +128,14 @@
   flex-shrink: 0;
 }
 
+/* On mobile, theme and language live in the bottom bar – hide from header */
+@media (max-width: 900px) {
+  .header__theme-toggle,
+  .header__actions .language-switcher {
+    display: none !important;
+  }
+}
+
 .header__theme-label {
   display: none;
 }
@@ -208,4 +217,13 @@
 .header__mobile-link--active {
   background: var(--sayo-surface-elevated);
   color: var(--sayo-accent);
+}
+
+/* Hide header when scrolling down, show when scrolling up */
+.app-shell--scroll-down .header {
+  transform: translateY(-100%);
+}
+
+.app-shell--scroll-up .header {
+  transform: translateY(0);
 }

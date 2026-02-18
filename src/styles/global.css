@@ -107,6 +107,10 @@ body {
   min-height: 100vh;
 }
 
+.app-shell {
+  min-height: 100vh;
+}
+
 img {
   max-width: 100%;
   height: auto;
