@@ -1,0 +1,109 @@
+{
+  "nav": {
+    "home": "Home",
+    "starItems": "Star Items",
+    "appetizers": "Appetizers",
+    "mains": "Mains",
+    "desserts": "Desserts",
+    "drinks": "Drinks",
+    "combos": "Combos",
+    "menu": "Menu"
+  },
+  "hero": {
+    "tagline": "Pan Asian Cuisine",
+    "title": "SAYO",
+    "subtitle": "Pan Asian Restaurant",
+    "cta": "View Menu",
+    "description": "Born at Night. Perfected Through Passion. Experience the vibrant, diverse world of Pan Asian cuisine."
+  },
+  "filters": {
+    "title": "Filter",
+    "category": "Category",
+    "priceRange": "Price",
+    "diet": "Diet",
+    "all": "All",
+    "vegetarian": "Vegetarian",
+    "nonVegetarian": "Non-Vegetarian",
+    "popularity": "Popularity",
+    "clearAll": "Clear all",
+    "under": "Under {{price}} SAR",
+    "anyPrice": "Any price",
+    "over100": "100+ SAR",
+    "chefSpecial": "Chef's Special",
+    "showFilters": "Filters",
+    "hideFilters": "Hide filters",
+    "sortDefault": "Default",
+    "sortPopularity": "Most popular",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "view": "View",
+    "viewGrid": "Grid view",
+    "viewList": "List view"
+  },
+  "categories": {
+    "starItems": "Star Items",
+    "chefSpecialties": "Chef Specialties",
+    "appetizers": "Appetizers",
+    "mains": "Mains",
+    "desserts": "Desserts",
+    "drinks": "Drinks",
+    "combos": "Combos",
+    "soups": "Soups",
+    "salads": "Salads",
+    "sushi": "Sushi",
+    "dimSum": "Dim Sum & Bao",
+    "robata": "Robata Grill",
+    "curries": "Asian Mains & Curries",
+    "indian": "Indian",
+    "beverages": "Beverages"
+  },
+  "dish": {
+    "viewDetails": "View details",
+    "addToOrder": "Add to Order",
+    "price": "{{value}} SAR",
+    "perPiece": "{{value}} SAR (4 pcs.)",
+    "ingredients": "Ingredients",
+    "allergens": "Allergens",
+    "kcal": "{{value}} kcal",
+    "origin": "From {{country}}"
+  },
+  "spice": {
+    "label": "Spice",
+    "level0": "Not spicy",
+    "level1": "Mild",
+    "level2": "Medium",
+    "level3": "Hot",
+    "level4": "Very hot"
+  },
+  "country": {
+    "JP": "Japan",
+    "CN": "China",
+    "TH": "Thailand",
+    "IN": "India",
+    "US": "United States",
+    "FR": "France",
+    "KR": "South Korea",
+    "VN": "Vietnam",
+    "CY": "Cyprus"
+  },
+  "modal": {
+    "close": "Close",
+    "previous": "Previous dish",
+    "next": "Next dish"
+  },
+  "starItems": {
+    "subtitle": "Chef's picks and house favourites.",
+    "chefBadge": "Chef's Special"
+  },
+  "language": {
+    "en": "English",
+    "ar": "العربية",
+    "ariaLabel": "Language"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
+  }
+}

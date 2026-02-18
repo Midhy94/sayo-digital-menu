@@ -1,0 +1,205 @@
+.menu-grid {
+  padding: var(--ios-space-10) var(--ios-space-5);
+}
+
+.menu-grid__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.menu-grid__section {
+  margin-bottom: var(--ios-space-10);
+}
+
+.menu-grid__section:last-child {
+  margin-bottom: 0;
+}
+
+.menu-grid__section-hero {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--ios-radius-xl);
+  margin-bottom: var(--ios-space-6);
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--ios-shadow-md);
+}
+
+.menu-grid__section-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Dark overlay: lighter at top so image shows, darker at center for title contrast */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  z-index: 0;
+}
+
+[data-theme="light"] .menu-grid__section-hero::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.28) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+.menu-grid__section-title {
+  font-family: var(--font-display);
+  font-size: var(--ios-text-title2);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--ios-space-2) var(--ios-space-5);
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: var(--ios-radius-md);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .menu-grid__section-title {
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Category-specific background images */
+.menu-grid__section-hero--appetizers {
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&q=85');
+}
+
+.menu-grid__section-hero--soups {
+  background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1200&q=85');
+}
+
+.menu-grid__section-hero--salads {
+  background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=85');
+}
+
+.menu-grid__section-hero--sushi {
+  background-image: url('https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&q=85');
+}
+
+.menu-grid__section-hero--dimSum {
+  background-image: url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&q=85');
+}
+
+.menu-grid__section-hero--robata {
+  background-image: url('https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=85');
+}
+
+.menu-grid__section-hero--mains {
+  background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1200&q=85');
+}
+
+.menu-grid__section-hero--indian {
+  background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1200&q=85');
+}
+
+.menu-grid__section-hero--desserts {
+  background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1200&q=85');
+}
+
+.menu-grid__section-hero--drinks {
+  background-image: url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=1200&q=85');
+}
+
+.menu-grid__section-hero--combos {
+  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=85');
+}
+
+.menu-grid__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ios-space-5);
+}
+
+@media (min-width: 560px) {
+  .menu-grid__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .menu-grid__list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ios-space-6);
+  }
+}
+
+@media (min-width: 1200px) {
+  .menu-grid__list {
+    gap: var(--ios-space-8);
+  }
+}
+
+.menu-grid__empty {
+  text-align: center;
+  padding: var(--ios-space-16);
+  color: var(--sayo-text-muted);
+  font-size: var(--ios-text-callout);
+}
+
+/* List view (Amazon-style rows)
+   On small screens: 1 per row
+   On wider screens: 2 cards per row */
+.menu-grid--list .menu-grid__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ios-space-3);
+}
+
+@media (min-width: 768px) {
+  .menu-grid--list .menu-grid__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.menu-grid--list .menu-grid__list .dish-card .dish-card__trigger {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  text-align: start;
+}
+
+.menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
+  width: 140px;
+  min-width: 140px;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.menu-grid--list .menu-grid__list .dish-card .dish-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--ios-space-4);
+}
+
+.menu-grid--list .menu-grid__list .dish-card .dish-card__desc {
+  -webkit-line-clamp: 2;
+}
+
+@media (min-width: 600px) {
+  .menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
+    width: 180px;
+    min-width: 180px;
+  }
+}
