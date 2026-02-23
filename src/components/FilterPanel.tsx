@@ -2,21 +2,24 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMenu } from '../contexts/MenuContext'
-import type { Diet, PriceRange, MenuFilters } from '../types/menu'
+import { useTheme } from '../contexts/ThemeContext'
+import { ThemeIcon } from './ThemeIcon'
+import { ViewIcon } from './ViewIcon'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import type { Diet, MenuFilters } from '../types/menu'
 import './FilterPanel.css'
+
+const navKeys = [
+  'all',
+  'food',
+  'kids',
+  'beverages',
+] as const
 
 const dietOptions: { value: Diet; key: string }[] = [
   { value: 'all', key: 'all' },
   { value: 'vegetarian', key: 'vegetarian' },
   { value: 'non-vegetarian', key: 'nonVegetarian' },
-]
-
-const priceOptions: { value: PriceRange; labelKey: string; priceNum?: number }[] = [
-  { value: 'all', labelKey: 'anyPrice' },
-  { value: 'under30', labelKey: 'under', priceNum: 30 },
-  { value: 'under50', labelKey: 'under', priceNum: 50 },
-  { value: 'under100', labelKey: 'under', priceNum: 100 },
-  { value: 'over100', labelKey: 'over100' },
 ]
 
 const sortOptions: { value: MenuFilters['sortBy']; key: string }[] = [
@@ -34,16 +37,6 @@ function getFilterLabel(
   if (filters.diet !== 'all') {
     labels.push(t(`filters.${filters.diet === 'vegetarian' ? 'vegetarian' : 'nonVegetarian'}`))
   }
-  if (filters.priceRange !== 'all') {
-    const priceOpt = priceOptions.find((o) => o.value === filters.priceRange)
-    if (priceOpt) {
-      labels.push(
-        priceOpt.value === 'over100'
-          ? t('filters.over100')
-          : t(`filters.${priceOpt.labelKey}`, { price: priceOpt.priceNum })
-      )
-    }
-  }
   if (filters.sortBy !== 'default') {
     const sortOpt = sortOptions.find((o) => o.value === filters.sortBy)
     if (sortOpt) labels.push(t(`filters.${sortOpt.key}`))
@@ -56,22 +49,21 @@ function getFilterLabel(
 
 export function FilterPanel() {
   const { t } = useTranslation()
+  const { toggleTheme, isDark } = useTheme()
   const {
     filters,
+    setCategory,
     viewMode,
     setViewMode,
     setDiet,
-    setPriceRange,
     setSortBy,
     setChefSpecialOnly,
     clearFilters,
-    filteredDishes,
   } = useMenu()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const hasActiveFilters =
     filters.diet !== 'all' ||
-    filters.priceRange !== 'all' ||
     filters.sortBy !== 'default' ||
     filters.chefSpecialOnly
 
@@ -97,158 +89,104 @@ export function FilterPanel() {
         transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 30 }}
       >
         <div className="filter-panel__inner">
-          {hasActiveFilters && (
-            <div className="filter-panel__active-filters">
-              <div className="filter-panel__active-filters-list">
-                {activeFilterLabels.map((label, idx) => (
-                  <motion.button
-                    key={idx}
-                    type="button"
-                    className="filter-panel__active-chip"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    onClick={() => {
-                      if (label === t('filters.chefSpecial')) {
-                        setChefSpecialOnly(false)
-                      } else if (label.includes('SAR') || label === t('filters.over100')) {
-                        setPriceRange('all')
-                      } else if (
-                        label === t('filters.sortPopularity') ||
-                        label === t('filters.sortPriceAsc') ||
-                        label === t('filters.sortPriceDesc')
-                      ) {
-                        setSortBy('default')
-                      } else {
-                        setDiet('all')
-                      }
-                    }}
-                  >
-                    <span>{label}</span>
-                    <span className="filter-panel__active-chip-close">×</span>
-                  </motion.button>
-                ))}
-              </div>
-              <button
-                type="button"
-                className="filter-panel__clear-all"
-                onClick={clearFilters}
-                aria-label={t('filters.clearAll')}
-              >
-                {t('filters.clearAll')}
-              </button>
-            </div>
-          )}
-
-          <div className="filter-panel__controls">
-            <div className="filter-panel__section">
-              <div className="filter-panel__section-label">{t('filters.diet')}</div>
-              <div className="filter-panel__segmented" role="group" aria-label={t('filters.diet')}>
-                {dietOptions.map(({ value, key }) => (
+          <nav className="filter-panel__nav" aria-label={t('nav.menu')}>
+            <h2 className="filter-panel__sidebar-title">{t('nav.menu')}</h2>
+            <ul className="filter-panel__nav-list">
+              {navKeys.map((key) => (
+                <li key={key}>
                   <button
-                    key={value}
                     type="button"
-                    className={`filter-panel__segment-btn ${filters.diet === value ? 'filter-panel__segment-btn--active' : ''}`}
+                    className={`filter-panel__nav-link ${filters.category === key ? 'filter-panel__nav-link--active' : ''}`}
+                    onClick={() => setCategory(key)}
+                  >
+                    {key === 'all' ? t('nav.showAll') : t(`nav.${key}`)}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="filter-panel__filter-block">
+            <h2 className="filter-panel__sidebar-title filter-panel__sidebar-title--section">{t('filters.title')}</h2>
+            <ul className="filter-panel__option-list" role="group" aria-label={t('filters.title')}>
+              <li>
+                <button
+                  type="button"
+                  className={`filter-panel__option-link ${!hasActiveFilters ? 'filter-panel__option-link--active' : ''}`}
+                  onClick={clearFilters}
+                  aria-pressed={!hasActiveFilters}
+                >
+                  {t('filters.all')}
+                </button>
+              </li>
+              {dietOptions.filter((o) => o.value !== 'all').map(({ value, key }) => (
+                <li key={`diet-${value}`}>
+                  <button
+                    type="button"
+                    className={`filter-panel__option-link ${filters.diet === value ? 'filter-panel__option-link--active' : ''}`}
                     onClick={() => setDiet(value)}
                     aria-pressed={filters.diet === value}
                   >
                     {t(`filters.${key}`)}
                   </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="filter-panel__section">
-              <div className="filter-panel__section-label">{t('filters.priceRange')}</div>
-              <div className="filter-panel__pills">
-                {priceOptions.map(({ value, labelKey, priceNum }) => (
+                </li>
+              ))}
+              {sortOptions.filter((o) => o.value !== 'default').map(({ value, key }) => (
+                <li key={`sort-${value}`}>
                   <button
-                    key={value}
                     type="button"
-                    className={`filter-panel__pill ${filters.priceRange === value ? 'filter-panel__pill--active' : ''}`}
-                    onClick={() => setPriceRange(value)}
-                    aria-pressed={filters.priceRange === value}
+                    className={`filter-panel__option-link ${filters.sortBy === value ? 'filter-panel__option-link--active' : ''}`}
+                    onClick={() => setSortBy(value)}
+                    aria-pressed={filters.sortBy === value}
                   >
-                    {value === 'all'
-                      ? t(`filters.${labelKey}`)
-                      : value === 'over100'
-                        ? t('filters.over100')
-                        : t(`filters.${labelKey}`, { price: priceNum })}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="filter-panel__section filter-panel__section--compact">
-              <div className="filter-panel__section-label">{t('filters.popularity')}</div>
-              <select
-                className="filter-panel__select"
-                value={filters.sortBy}
-                onChange={(e) => setSortBy(e.target.value as MenuFilters['sortBy'])}
-                aria-label={t('filters.popularity')}
-              >
-                {sortOptions.map(({ value, key }) => (
-                  <option key={value} value={value}>
                     {t(`filters.${key}`)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-panel__section filter-panel__section--compact">
-              <div className="filter-panel__toggle-wrapper">
-                <span className="filter-panel__toggle-label">{t('filters.chefSpecial')}</span>
+                  </button>
+                </li>
+              ))}
+              <li>
                 <button
                   type="button"
                   role="switch"
-                  aria-checked={filters.chefSpecialOnly}
-                  className={`filter-panel__ios-toggle ${filters.chefSpecialOnly ? 'filter-panel__ios-toggle--on' : ''}`}
+                  className={`filter-panel__option-link ${filters.chefSpecialOnly ? 'filter-panel__option-link--active' : ''}`}
                   onClick={() => setChefSpecialOnly(!filters.chefSpecialOnly)}
+                  aria-pressed={filters.chefSpecialOnly}
                 >
-                  <span className="filter-panel__ios-toggle-track">
-                    <span className="filter-panel__ios-toggle-thumb" />
-                  </span>
+                  {t('filters.chefSpecial')}
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="filter-panel__sidebar-footer">
+            <div className="filter-panel__footer-row">
+              <div className="filter-panel__theme-wrap">
+                <span className="filter-panel__theme-label">{isDark ? t('theme.light') : t('theme.dark')}</span>
+                <button
+                  type="button"
+                  className="filter-panel__theme-btn"
+                  onClick={toggleTheme}
+                  aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
+                  title={isDark ? t('theme.light') : t('theme.dark')}
+                >
+                  <ThemeIcon isDark={isDark} />
+                </button>
+              </div>
+              <div className="filter-panel__view-wrap">
+                <span className="filter-panel__view-label">
+                  {viewMode === 'grid' ? t('filters.viewListShort') : t('filters.viewGridShort')}
+                </span>
+                <button
+                  type="button"
+                  className="filter-panel__view-btn"
+                  onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                  aria-label={viewMode === 'grid' ? t('filters.viewList') : t('filters.viewGrid')}
+                  title={viewMode === 'grid' ? t('filters.viewListShort') : t('filters.viewGridShort')}
+                >
+                  <ViewIcon viewMode={viewMode} />
                 </button>
               </div>
             </div>
-            <div className="filter-panel__section filter-panel__section--results">
-              <div className="filter-panel__results">
-                <span className="filter-panel__results-number">{filteredDishes.length}</span>
-                <span className="filter-panel__results-label">{t('nav.menu').toLowerCase()}</span>
-              </div>
-              <div className="filter-panel__view-toggle" role="group" aria-label={t('filters.viewGrid')}>
-                <button
-                  type="button"
-                  className={`filter-panel__view-btn ${viewMode === 'grid' ? 'filter-panel__view-btn--active' : ''}`}
-                  onClick={() => setViewMode('grid')}
-                  aria-pressed={viewMode === 'grid'}
-                  aria-label={t('filters.viewGrid')}
-                  title={t('filters.viewGrid')}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7" rx="1" />
-                    <rect x="14" y="3" width="7" height="7" rx="1" />
-                    <rect x="3" y="14" width="7" height="7" rx="1" />
-                    <rect x="14" y="14" width="7" height="7" rx="1" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  className={`filter-panel__view-btn ${viewMode === 'list' ? 'filter-panel__view-btn--active' : ''}`}
-                  onClick={() => setViewMode('list')}
-                  aria-pressed={viewMode === 'list'}
-                  aria-label={t('filters.viewList')}
-                  title={t('filters.viewList')}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <line x1="8" y1="6" x2="21" y2="6" />
-                    <line x1="8" y1="12" x2="21" y2="12" />
-                    <line x1="8" y1="18" x2="21" y2="18" />
-                    <line x1="3" y1="6" x2="3.01" y2="6" />
-                    <line x1="3" y1="12" x2="3.01" y2="12" />
-                    <line x1="3" y1="18" x2="3.01" y2="18" />
-                  </svg>
-                </button>
-              </div>
+            <div className="filter-panel__language-wrap">
+              <span className="filter-panel__language-label">{t('language.ariaLabel')}</span>
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
@@ -303,114 +241,53 @@ export function FilterPanel() {
                 </button>
               </div>
               <div className="filter-panel__drawer-body">
-                {hasActiveFilters && (
-                  <div className="filter-panel__drawer-active">
-                    <div className="filter-panel__drawer-active-list">
-                      {activeFilterLabels.map((label, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          className="filter-panel__drawer-chip"
-                          onClick={() => {
-                            if (label === t('filters.chefSpecial')) {
-                              setChefSpecialOnly(false)
-                            } else if (label.includes('SAR') || label === t('filters.over100')) {
-                              setPriceRange('all')
-                            } else if (
-                              label === t('filters.sortPopularity') ||
-                              label === t('filters.sortPriceAsc') ||
-                              label === t('filters.sortPriceDesc')
-                            ) {
-                              setSortBy('default')
-                            } else {
-                              setDiet('all')
-                            }
-                          }}
-                        >
-                          {label}
-                          <span>×</span>
-                        </button>
-                      ))}
-                    </div>
+                <ul className="filter-panel__drawer-option-list" role="group" aria-label={t('filters.title')}>
+                  <li>
                     <button
                       type="button"
-                      className="filter-panel__drawer-clear"
-                      onClick={clearFilters}
+                      className={`filter-panel__drawer-option-link ${!hasActiveFilters ? 'filter-panel__drawer-option-link--active' : ''}`}
+                      onClick={() => clearFilters()}
+                      aria-pressed={!hasActiveFilters}
                     >
-                      {t('filters.clearAll')}
+                      {t('filters.all')}
                     </button>
-                  </div>
-                )}
-
-                <div className="filter-panel__drawer-section">
-                  <h4 className="filter-panel__drawer-section-title">{t('filters.diet')}</h4>
-                  <div className="filter-panel__segmented">
-                    {dietOptions.map(({ value, key }) => (
+                  </li>
+                  {dietOptions.filter((o) => o.value !== 'all').map(({ value, key }) => (
+                    <li key={`diet-${value}`}>
                       <button
-                        key={value}
                         type="button"
-                        className={`filter-panel__segment-btn ${filters.diet === value ? 'filter-panel__segment-btn--active' : ''}`}
+                        className={`filter-panel__drawer-option-link ${filters.diet === value ? 'filter-panel__drawer-option-link--active' : ''}`}
                         onClick={() => setDiet(value)}
                         aria-pressed={filters.diet === value}
                       >
                         {t(`filters.${key}`)}
                       </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="filter-panel__drawer-section">
-                  <h4 className="filter-panel__drawer-section-title">{t('filters.priceRange')}</h4>
-                  <div className="filter-panel__pills filter-panel__pills--wrap">
-                    {priceOptions.map(({ value, labelKey, priceNum }) => (
+                    </li>
+                  ))}
+                  {sortOptions.filter((o) => o.value !== 'default').map(({ value, key }) => (
+                    <li key={`sort-${value}`}>
                       <button
-                        key={value}
                         type="button"
-                        className={`filter-panel__pill ${filters.priceRange === value ? 'filter-panel__pill--active' : ''}`}
-                        onClick={() => setPriceRange(value)}
-                        aria-pressed={filters.priceRange === value}
+                        className={`filter-panel__drawer-option-link ${filters.sortBy === value ? 'filter-panel__drawer-option-link--active' : ''}`}
+                        onClick={() => setSortBy(value)}
+                        aria-pressed={filters.sortBy === value}
                       >
-                        {value === 'all'
-                          ? t(`filters.${labelKey}`)
-                          : value === 'over100'
-                            ? t('filters.over100')
-                            : t(`filters.${labelKey}`, { price: priceNum })}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="filter-panel__drawer-section">
-                  <h4 className="filter-panel__drawer-section-title">{t('filters.popularity')}</h4>
-                  <select
-                    className="filter-panel__select filter-panel__select--full"
-                    value={filters.sortBy}
-                    onChange={(e) => setSortBy(e.target.value as MenuFilters['sortBy'])}
-                  >
-                    {sortOptions.map(({ value, key }) => (
-                      <option key={value} value={value}>
                         {t(`filters.${key}`)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="filter-panel__drawer-section">
-                  <div className="filter-panel__toggle-wrapper filter-panel__toggle-wrapper--full">
-                    <span className="filter-panel__toggle-label">{t('filters.chefSpecial')}</span>
+                      </button>
+                    </li>
+                  ))}
+                  <li>
                     <button
                       type="button"
                       role="switch"
-                      aria-checked={filters.chefSpecialOnly}
-                      className={`filter-panel__ios-toggle ${filters.chefSpecialOnly ? 'filter-panel__ios-toggle--on' : ''}`}
+                      className={`filter-panel__drawer-option-link ${filters.chefSpecialOnly ? 'filter-panel__drawer-option-link--active' : ''}`}
                       onClick={() => setChefSpecialOnly(!filters.chefSpecialOnly)}
+                      aria-pressed={filters.chefSpecialOnly}
                     >
-                      <span className="filter-panel__ios-toggle-track">
-                        <span className="filter-panel__ios-toggle-thumb" />
-                      </span>
+                      {t('filters.chefSpecial')}
                     </button>
-                  </div>
-                </div>
+                  </li>
+                </ul>
 
                 <div className="filter-panel__drawer-section">
                   <h4 className="filter-panel__drawer-section-title">{t('filters.view')}</h4>

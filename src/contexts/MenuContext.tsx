@@ -47,7 +47,13 @@ function filterAndSort(
   let result = [...dishes]
 
   if (filters.category !== 'all') {
-    if (filters.category === 'starItems') {
+    if (filters.category === 'food') {
+      result = result.filter((d) => d.categoryKey !== 'drinks')
+    } else if (filters.category === 'beverages') {
+      result = result.filter((d) => d.categoryKey === 'drinks')
+    } else if (filters.category === 'kids') {
+      result = result.filter((d) => d.menuGroup === 'kids')
+    } else if (filters.category === 'starItems') {
       result = result.filter((d) => d.isStar)
     } else if (filters.category === 'chefSpecialties') {
       result = result.filter((d) => d.isChefSpecialty)

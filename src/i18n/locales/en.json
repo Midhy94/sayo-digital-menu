@@ -1,12 +1,11 @@
 {
   "nav": {
     "home": "Home",
-    "starItems": "Star Items",
-    "appetizers": "Appetizers",
-    "mains": "Mains",
-    "desserts": "Desserts",
-    "drinks": "Drinks",
-    "combos": "Combos",
+    "showAll": "Show all",
+    "all": "Show all",
+    "food": "Food menu",
+    "kids": "Kids Menu",
+    "beverages": "Beverages menu",
     "menu": "Menu"
   },
   "hero": {
@@ -38,7 +37,9 @@
     "sortPriceDesc": "Price: high to low",
     "view": "View",
     "viewGrid": "Grid view",
-    "viewList": "List view"
+    "viewList": "List view",
+    "viewGridShort": "Grid",
+    "viewListShort": "List"
   },
   "categories": {
     "starItems": "Star Items",

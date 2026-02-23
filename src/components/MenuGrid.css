@@ -17,106 +17,27 @@
 
 .menu-grid__section-hero {
   width: 100%;
-  height: 120px;
-  border-radius: var(--ios-radius-xl);
-  margin-bottom: var(--ios-space-6);
-  position: relative;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--ios-shadow-md);
+  margin-bottom: 0;
+  /* No background box; heading spacing is handled on the title element */
 }
 
 .menu-grid__section-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  /* Dark overlay: lighter at top so image shows, darker at center for title contrast */
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.35) 50%,
-    rgba(0, 0, 0, 0.45) 100%
-  );
-  z-index: 0;
-}
-
-[data-theme="light"] .menu-grid__section-hero::before {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.15) 0%,
-    rgba(0, 0, 0, 0.28) 50%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  content: none;
 }
 
 .menu-grid__section-title {
   font-family: var(--font-display);
-  font-size: var(--ios-text-title2);
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.08em;
+  font-size: var(--ios-text-title1);
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: var(--ios-space-2) var(--ios-space-5);
-  background: rgba(0, 0, 0, 0.45);
-  border-radius: var(--ios-radius-md);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="light"] .menu-grid__section-title {
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.5);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-/* Category-specific background images */
-.menu-grid__section-hero--appetizers {
-  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&q=85');
-}
-
-.menu-grid__section-hero--soups {
-  background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1200&q=85');
-}
-
-.menu-grid__section-hero--salads {
-  background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=85');
-}
-
-.menu-grid__section-hero--sushi {
-  background-image: url('https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&q=85');
-}
-
-.menu-grid__section-hero--dimSum {
-  background-image: url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&q=85');
-}
-
-.menu-grid__section-hero--robata {
-  background-image: url('https://images.unsplash.com/photo-1558030006-450675393462?w=1200&q=85');
-}
-
-.menu-grid__section-hero--mains {
-  background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1200&q=85');
-}
-
-.menu-grid__section-hero--indian {
-  background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1200&q=85');
-}
-
-.menu-grid__section-hero--desserts {
-  background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1200&q=85');
-}
-
-.menu-grid__section-hero--drinks {
-  background-image: url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=1200&q=85');
+  margin: 0 0 var(--ios-space-4) 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  text-align: left;
+  text-shadow: none;
 }
 
 .menu-grid__section-hero--combos {

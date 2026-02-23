@@ -21,14 +21,34 @@ const gridSectionKeys = categoryOrder.filter(
   (k) => k !== 'starItems' && k !== 'chefSpecialties'
 )
 
+const foodSectionKeys = gridSectionKeys.filter((k) => k !== 'drinks' && k !== 'combos')
+
+type SectionItem = { key: string; titleKey: string; dishes: Dish[] }
+
 export function MenuGrid() {
   const { t } = useTranslation()
-  const { filteredDishes, viewMode } = useMenu()
-  const byCategory = useMemo(() => groupByCategory(filteredDishes), [filteredDishes])
+  const { filteredDishes, viewMode, filters } = useMenu()
 
-  const sections = gridSectionKeys
-    .map((key) => ({ key, dishes: byCategory.get(key) ?? [] }))
-    .filter((s) => s.dishes.length > 0)
+  const sections = useMemo((): SectionItem[] => {
+    const category = filters.category
+
+    if (category === 'kids') {
+      return filteredDishes.length > 0
+        ? [{ key: 'kids', titleKey: 'nav.kids', dishes: filteredDishes }]
+        : []
+    }
+    if (category === 'beverages') {
+      return filteredDishes.length > 0
+        ? [{ key: 'beverages', titleKey: 'nav.beverages', dishes: filteredDishes }]
+        : []
+    }
+
+    const byCategory = groupByCategory(filteredDishes)
+    const sectionKeys = category === 'food' ? foodSectionKeys : gridSectionKeys
+    return sectionKeys
+      .map((key) => ({ key, titleKey: `categories.${key}`, dishes: byCategory.get(key) ?? [] }))
+      .filter((s) => s.dishes.length > 0) as SectionItem[]
+  }, [filteredDishes, filters.category])
 
   if (filteredDishes.length === 0) {
     return (
@@ -49,7 +69,7 @@ export function MenuGrid() {
       aria-label="Menu items"
     >
       <div className="menu-grid__inner">
-        {sections.map(({ key, dishes }, sectionIndex) => (
+        {sections.map(({ key, titleKey, dishes }, sectionIndex) => (
           <motion.div
             key={key}
             className="menu-grid__section"
@@ -59,7 +79,7 @@ export function MenuGrid() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className={`menu-grid__section-hero menu-grid__section-hero--${key}`} data-category={key}>
-              <h2 className="menu-grid__section-title">{t(`categories.${key}`)}</h2>
+              <h2 className="menu-grid__section-title">{t(titleKey)}</h2>
             </div>
             <div className="menu-grid__list">
               {dishes.map((dish, index) => (

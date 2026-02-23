@@ -61,6 +61,7 @@ export const menuDishes: Dish[] = [
     popularity: 92,
     country: 'CN',
     spiceLevel: 0,
+    menuGroup: 'kids',
   },
   {
     id: '4',
@@ -78,6 +79,7 @@ export const menuDishes: Dish[] = [
     popularity: 90,
     country: 'CN',
     spiceLevel: 0,
+    menuGroup: 'kids',
   },
   {
     id: '5',
@@ -95,6 +97,7 @@ export const menuDishes: Dish[] = [
     popularity: 96,
     country: 'IN',
     spiceLevel: 1,
+    menuGroup: 'kids',
   },
   {
     id: '6',

@@ -1,12 +1,11 @@
 {
   "nav": {
     "home": "الرئيسية",
-    "starItems": "المميزة",
-    "appetizers": "المقبلات",
-    "mains": "الأطباق الرئيسية",
-    "desserts": "الحلويات",
-    "drinks": "المشروبات",
-    "combos": "العروض",
+    "showAll": "عرض الكل",
+    "all": "عرض الكل",
+    "food": "قائمة الأطعمة",
+    "kids": "قائمة الأطفال",
+    "beverages": "قائمة المشروبات",
     "menu": "القائمة"
   },
   "hero": {
@@ -38,7 +37,9 @@
     "sortPriceDesc": "السعر: عالي إلى منخفض",
     "view": "العرض",
     "viewGrid": "عرض شبكي",
-    "viewList": "عرض قائمة"
+    "viewList": "عرض قائمة",
+    "viewGridShort": "شبكة",
+    "viewListShort": "قائمة"
   },
   "categories": {
     "starItems": "المميزة",

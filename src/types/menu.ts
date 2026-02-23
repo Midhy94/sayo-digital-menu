@@ -24,6 +24,8 @@ export interface Dish {
   country?: string
   /** Spice level 0–4: 0 = not spicy, 4 = very hot. */
   spiceLevel?: number
+  /** Top-level menu: food, kids, or beverages (used for Show all / Food / Kids / Beverages nav). */
+  menuGroup?: 'food' | 'kids' | 'beverages'
 }
 
 export interface MenuFilters {
