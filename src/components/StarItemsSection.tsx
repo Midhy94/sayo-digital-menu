@@ -48,17 +48,10 @@ export function StarItemsSection() {
       aria-labelledby="star-items-heading"
     >
       <div className="star-items__inner">
-        <div className="star-items__header">
-          <motion.div
-            className="star-items__hero"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h2 id="star-items-heading" className="star-items__heading">
-              {t('categories.starItems')}
-            </h2>
-          </motion.div>
+        <div className="star-items__heading-row">
+          <h2 id="star-items-heading" className="star-items__heading">
+            {t('categories.starItems')}
+          </h2>
           <div className="star-items__controls" aria-hidden="true">
             <button
               type="button"
@@ -68,6 +61,7 @@ export function StarItemsSection() {
                 if (!el) return
                 el.scrollBy({ left: -el.clientWidth * 0.8, behavior: 'smooth' })
               }}
+              aria-label="Previous"
             >
               ‹
             </button>
@@ -79,6 +73,7 @@ export function StarItemsSection() {
                 if (!el) return
                 el.scrollBy({ left: el.clientWidth * 0.8, behavior: 'smooth' })
               }}
+              aria-label="Next"
             >
               ›
             </button>

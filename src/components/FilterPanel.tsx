@@ -3,11 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMenu } from '../contexts/MenuContext'
 import { useTheme } from '../contexts/ThemeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { ThemeIcon } from './ThemeIcon'
 import { ViewIcon } from './ViewIcon'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import type { Diet, MenuFilters } from '../types/menu'
 import './FilterPanel.css'
+
+const SIDEBAR_LOGOS = {
+  dark: { en: '/assets/Logo_lgt_EN.svg', ar: '/assets/Logo_lgt_AR.svg' },
+  light: { en: '/assets/Logo_EN.svg', ar: '/assets/Logo_AR.svg' },
+} as const
 
 const navKeys = [
   'all',
@@ -50,6 +56,7 @@ function getFilterLabel(
 export function FilterPanel() {
   const { t } = useTranslation()
   const { toggleTheme, isDark } = useTheme()
+  const { language } = useLanguage()
   const {
     filters,
     setCategory,
@@ -89,6 +96,15 @@ export function FilterPanel() {
         transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 30 }}
       >
         <div className="filter-panel__inner">
+          <a href="#" className="filter-panel__logo" aria-label="SAYO">
+            <img
+              src={SIDEBAR_LOGOS[isDark ? 'dark' : 'light'][language === 'ar' ? 'ar' : 'en']}
+              alt="SAYO"
+              className="filter-panel__logo-img"
+              width={140}
+              height={67}
+            />
+          </a>
           <nav className="filter-panel__nav" aria-label={t('nav.menu')}>
             <h2 className="filter-panel__sidebar-title">{t('nav.menu')}</h2>
             <ul className="filter-panel__nav-list">

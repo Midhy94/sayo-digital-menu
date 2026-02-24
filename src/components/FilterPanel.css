@@ -1,7 +1,7 @@
 /* Desktop: left sidebar (admin-panel layout) – always visible on the left */
 @media (min-width: 901px) {
   .filter-panel {
-    width: 280px;
+    width: 260px;
     min-width: 0;
     flex-shrink: 0;
     position: sticky;
@@ -33,6 +33,31 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
+  }
+
+  .filter-panel__logo {
+    display: block;
+    line-height: 0;
+    margin-bottom: var(--ios-space-2);
+    text-decoration: none;
+  }
+
+  .filter-panel__logo:hover {
+    opacity: 0.9;
+  }
+
+  .filter-panel__logo-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 180px;
+    max-height: 56px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  [dir="rtl"] .filter-panel__logo-img {
+    object-position: right center;
   }
 
   .filter-panel__controls {
