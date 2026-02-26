@@ -787,6 +787,15 @@
   gap: var(--ios-space-4);
 }
 
+.filter-panel__drawer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ios-space-1);
+}
+
 .filter-panel__drawer-option-list {
   list-style: none;
   padding: 0;

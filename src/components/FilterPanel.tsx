@@ -257,7 +257,30 @@ export function FilterPanel() {
                 </button>
               </div>
               <div className="filter-panel__drawer-body">
-                <ul className="filter-panel__drawer-option-list" role="group" aria-label={t('filters.title')}>
+                <div className="filter-panel__drawer-section">
+                  <h4 className="filter-panel__drawer-section-title">{t('nav.menu')}</h4>
+                  <ul className="filter-panel__drawer-nav-list" role="group" aria-label={t('nav.menu')}>
+                    {navKeys.map((key) => (
+                      <li key={key}>
+                        <button
+                          type="button"
+                          className={`filter-panel__drawer-option-link filter-panel__drawer-nav-link ${filters.category === key ? 'filter-panel__drawer-option-link--active' : ''}`}
+                          onClick={() => {
+                            setCategory(key)
+                            setDrawerOpen(false)
+                          }}
+                          aria-pressed={filters.category === key}
+                        >
+                          {key === 'all' ? t('nav.showAll') : t(`nav.${key}`)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="filter-panel__drawer-section">
+                  <h4 className="filter-panel__drawer-section-title">{t('filters.title')}</h4>
+                  <ul className="filter-panel__drawer-option-list" role="group" aria-label={t('filters.title')}>
                   <li>
                     <button
                       type="button"
@@ -304,6 +327,7 @@ export function FilterPanel() {
                     </button>
                   </li>
                 </ul>
+                </div>
 
                 <div className="filter-panel__drawer-section">
                   <h4 className="filter-panel__drawer-section-title">{t('filters.view')}</h4>
