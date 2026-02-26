@@ -32,7 +32,6 @@
     gap: var(--ios-space-4);
     flex: 1;
     min-height: 0;
-    overflow: hidden;
   }
 
   .filter-panel__logo {
@@ -110,7 +109,8 @@
     flex-direction: column;
     gap: 0;
     min-width: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .filter-panel__filter-block .filter-panel__sidebar-title--section {

@@ -8,6 +8,10 @@
     "beverages": "Beverages menu",
     "menu": "Menu"
   },
+  "intro": {
+    "story": "Born at Night. Perfected Through Passion. SAYO brings the vibrant, diverse world of Pan Asian cuisine to life—from Tokyo to Bangkok, in the heart of Al Jubail.",
+    "continue": "Continue to Menu"
+  },
   "hero": {
     "tagline": "Pan Asian Cuisine",
     "title": "SAYO",

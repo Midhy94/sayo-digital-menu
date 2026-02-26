@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 import { useMenu } from '../contexts/MenuContext'
 import { getCountryFlag } from '../utils/countryFlag'
 import { SpiceLevel } from './SpiceLevel'
+import { DishCard } from './DishCard'
 import type { Dish } from '../types/menu'
 import './StarItemsSection.css'
 
@@ -34,7 +35,7 @@ const item = {
 
 export function StarItemsSection() {
   const { t } = useTranslation()
-  const { dishes, openDishModal } = useMenu()
+  const { dishes, openDishModal, viewMode } = useMenu()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const starDishes = dishes.filter((d) => d.isStar || d.isChefSpecialty)
@@ -88,26 +89,36 @@ export function StarItemsSection() {
           {t('starItems.subtitle')}
         </motion.p>
 
-        <div className="star-items__slider">
-          <motion.div
-            ref={scrollRef}
-            className="star-items__scroll"
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            {starDishes.map((dish, index) => (
-              <motion.div
-                key={dish.id}
-                className="star-items__card-wrap"
-                variants={item}
-              >
-                <StarCard dish={dish} index={index} onSelect={() => openDishModal(dish)} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+        {viewMode === 'grid' ? (
+          <div className="star-items__slider">
+            <motion.div
+              ref={scrollRef}
+              className="star-items__scroll"
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-40px' }}
+            >
+              {starDishes.map((dish, index) => (
+                <motion.div
+                  key={dish.id}
+                  className="star-items__card-wrap"
+                  variants={item}
+                >
+                  <StarCard dish={dish} index={index} onSelect={() => openDishModal(dish)} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        ) : (
+          <div className="star-items__list menu-grid--list">
+            <div className="menu-grid__list">
+              {starDishes.map((dish, index) => (
+                <DishCard key={dish.id} dish={dish} index={index} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

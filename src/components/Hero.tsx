@@ -1,23 +1,26 @@
 import { useTranslation } from 'react-i18next'
-import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import './Hero.css'
 
-const LOGOS = {
-  dark: { en: '/assets/Logo_lgt_EN.svg', ar: '/assets/Logo_lgt_AR.svg' },
-  light: { en: '/assets/Logo_EN.svg', ar: '/assets/Logo_AR.svg' },
-} as const
+const LOGOS = { en: '/assets/Logo_lgt_EN.svg', ar: '/assets/Logo_lgt_AR.svg' } as const
 
 export function Hero() {
   const { t } = useTranslation()
-  const { isDark } = useTheme()
   const { language } = useLanguage()
-  const themeKey = isDark ? 'dark' : 'light'
-  const langKey = language === 'ar' ? 'ar' : 'en'
-  const logoSrc = LOGOS[themeKey][langKey]
+  const logoSrc = LOGOS[language === 'ar' ? 'ar' : 'en']
 
   return (
     <section className="hero" aria-label={t('hero.title')}>
+      <video
+        className="hero__video"
+        src="/assets/intro-video.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden
+      />
+      <div className="hero__overlay" aria-hidden />
       <div className="hero__inner">
         <div className="hero__logo-wrap">
           <img
