@@ -30,16 +30,18 @@ const dietOptions: { value: Diet; key: string }[] = [
 
 const sortOptions: { value: MenuFilters['sortBy']; key: string }[] = [
   { value: 'default', key: 'sortDefault' },
-  { value: 'popularity', key: 'sortPopularity' },
-  { value: 'price-asc', key: 'sortPriceAsc' },
   { value: 'price-desc', key: 'sortPriceDesc' },
 ]
 
 function getFilterLabel(
   t: (key: string, options?: any) => string,
   filters: MenuFilters,
+  subcategoryLabels: Map<string, string>,
 ): string[] {
   const labels: string[] = []
+  if (filters.subcategory !== 'all' && subcategoryLabels.has(filters.subcategory)) {
+    labels.push(subcategoryLabels.get(filters.subcategory)!)
+  }
   if (filters.diet !== 'all') {
     labels.push(t(`filters.${filters.diet === 'vegetarian' ? 'vegetarian' : 'nonVegetarian'}`))
   }
@@ -60,21 +62,27 @@ export function FilterPanel() {
   const {
     filters,
     setCategory,
+    setSubcategory,
+    availableSubcategories,
     viewMode,
     setViewMode,
     setDiet,
     setSortBy,
     setChefSpecialOnly,
-    clearFilters,
   } = useMenu()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
+  const subcategoryLabels = new Map(
+    availableSubcategories.map((s) => [s.key, t(s.titleKey)])
+  )
+
   const hasActiveFilters =
+    filters.subcategory !== 'all' ||
     filters.diet !== 'all' ||
     filters.sortBy !== 'default' ||
     filters.chefSpecialOnly
 
-  const activeFilterLabels = getFilterLabel(t, filters)
+  const activeFilterLabels = getFilterLabel(t, filters, subcategoryLabels)
 
   // Allow other components (e.g. mobile bottom bar) to open the drawer
   useEffect(() => {
@@ -124,17 +132,38 @@ export function FilterPanel() {
           <div className="filter-panel__filter-block">
             <h2 className="filter-panel__sidebar-title filter-panel__sidebar-title--section">{t('filters.title')}</h2>
             <ul className="filter-panel__option-list" role="group" aria-label={t('filters.title')}>
+              {availableSubcategories.length > 1 && (
+                <>
+                  <li className="filter-panel__option-list-divider" aria-hidden="true" />
+                  <li>
+                    <button
+                      type="button"
+                      className={`filter-panel__option-link ${filters.subcategory === 'all' ? 'filter-panel__option-link--active' : ''}`}
+                      onClick={() => setSubcategory('all')}
+                      aria-pressed={filters.subcategory === 'all'}
+                    >
+                      {t('filters.all')}
+                    </button>
+                  </li>
+                  {availableSubcategories.map(({ key, titleKey }) => (
+                    <li key={key}>
+                      <button
+                        type="button"
+                        className={`filter-panel__option-link ${filters.subcategory === key ? 'filter-panel__option-link--active' : ''}`}
+                        onClick={() => setSubcategory(key)}
+                        aria-pressed={filters.subcategory === key}
+                      >
+                        {t(titleKey)}
+                      </button>
+                    </li>
+                  ))}
+                  <li className="filter-panel__option-list-divider" aria-hidden="true" />
+                </>
+              )}
               <li>
-                <button
-                  type="button"
-                  className={`filter-panel__option-link ${!hasActiveFilters ? 'filter-panel__option-link--active' : ''}`}
-                  onClick={clearFilters}
-                  aria-pressed={!hasActiveFilters}
-                >
-                  {t('filters.all')}
-                </button>
+                <span className="filter-panel__option-list-label">{t('filters.diet')}</span>
               </li>
-              {dietOptions.filter((o) => o.value !== 'all').map(({ value, key }) => (
+              {dietOptions.map(({ value, key }) => (
                 <li key={`diet-${value}`}>
                   <button
                     type="button"
@@ -281,17 +310,36 @@ export function FilterPanel() {
                 <div className="filter-panel__drawer-section">
                   <h4 className="filter-panel__drawer-section-title">{t('filters.title')}</h4>
                   <ul className="filter-panel__drawer-option-list" role="group" aria-label={t('filters.title')}>
+                  {availableSubcategories.length > 1 && (
+                    <>
+                      <li>
+                        <button
+                          type="button"
+                          className={`filter-panel__drawer-option-link ${filters.subcategory === 'all' ? 'filter-panel__drawer-option-link--active' : ''}`}
+                          onClick={() => setSubcategory('all')}
+                          aria-pressed={filters.subcategory === 'all'}
+                        >
+                          {t('filters.all')}
+                        </button>
+                      </li>
+                      {availableSubcategories.map(({ key, titleKey }) => (
+                        <li key={key}>
+                          <button
+                            type="button"
+                            className={`filter-panel__drawer-option-link ${filters.subcategory === key ? 'filter-panel__drawer-option-link--active' : ''}`}
+                            onClick={() => setSubcategory(key)}
+                            aria-pressed={filters.subcategory === key}
+                          >
+                            {t(titleKey)}
+                          </button>
+                        </li>
+                      ))}
+                    </>
+                  )}
                   <li>
-                    <button
-                      type="button"
-                      className={`filter-panel__drawer-option-link ${!hasActiveFilters ? 'filter-panel__drawer-option-link--active' : ''}`}
-                      onClick={() => clearFilters()}
-                      aria-pressed={!hasActiveFilters}
-                    >
-                      {t('filters.all')}
-                    </button>
+                    <span className="filter-panel__drawer-section-subtitle">{t('filters.diet')}</span>
                   </li>
-                  {dietOptions.filter((o) => o.value !== 'all').map(({ value, key }) => (
+                  {dietOptions.map(({ value, key }) => (
                     <li key={`diet-${value}`}>
                       <button
                         type="button"
@@ -303,6 +351,9 @@ export function FilterPanel() {
                       </button>
                     </li>
                   ))}
+                  <li>
+                    <span className="filter-panel__drawer-section-subtitle">{t('filters.sortBy')}</span>
+                  </li>
                   {sortOptions.filter((o) => o.value !== 'default').map(({ value, key }) => (
                     <li key={`sort-${value}`}>
                       <button

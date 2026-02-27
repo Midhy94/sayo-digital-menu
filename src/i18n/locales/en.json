@@ -9,7 +9,7 @@
     "menu": "Menu"
   },
   "intro": {
-    "story": "Born at Night. Perfected Through Passion. SAYO brings the vibrant, diverse world of Pan Asian cuisine to life—from Tokyo to Bangkok, in the heart of Al Jubail.",
+    "story": "SAYO is a name inspired by the initials of its visionary founders, and in Japanese, it beautifully means \"Born at Night.\" Just as the night gives birth to new possibilities, SAYO represents a bold, fresh beginning in the culinary landscape of Jubail, KSA.",
     "continue": "Continue to Menu"
   },
   "hero": {
@@ -17,7 +17,7 @@
     "title": "SAYO",
     "subtitle": "Pan Asian Restaurant",
     "cta": "View Menu",
-    "description": "Born at Night. Perfected Through Passion. Experience the vibrant, diverse world of Pan Asian cuisine."
+    "description": "SAYO is a name inspired by the initials of its visionary founders, and in Japanese, it beautifully means \"Born at Night.\" Just as the night gives birth to new possibilities, SAYO represents a bold, fresh beginning in the culinary landscape of Jubail, KSA."
   },
   "filters": {
     "title": "Filter",
@@ -35,6 +35,7 @@
     "chefSpecial": "Chef's Special",
     "showFilters": "Filters",
     "hideFilters": "Hide filters",
+    "sortBy": "Sort by",
     "sortDefault": "Default",
     "sortPopularity": "Most popular",
     "sortPriceAsc": "Price: low to high",

@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Hero } from './components/Hero'
 import { FilterPanel } from './components/FilterPanel'
-import { StarItemsSection } from './components/StarItemsSection'
 import { MenuGrid } from './components/MenuGrid'
 import { DishModal } from './components/DishModal'
 import { BottomBar } from './components/BottomBar'
 import { IntroVideo } from './components/IntroVideo'
-import { useMenu } from './contexts/MenuContext'
 
 function App() {
   const [showIntro, setShowIntro] = useState(true)
-  const { filters } = useMenu()
-
   useEffect(() => {
     if (showIntro) {
       document.body.style.overflow = 'hidden'
@@ -25,12 +21,6 @@ function App() {
       document.documentElement.style.overflow = ''
     }
   }, [showIntro])
-
-  const hasActiveFilters =
-    filters.category !== 'all' ||
-    filters.diet !== 'all' ||
-    filters.sortBy !== 'default' ||
-    filters.chefSpecialOnly
 
   if (showIntro) {
     return (
@@ -47,7 +37,6 @@ function App() {
         <FilterPanel />
         <main className="app-content">
           <Hero />
-          {!hasActiveFilters && <StarItemsSection />}
           <MenuGrid />
         </main>
       </div>

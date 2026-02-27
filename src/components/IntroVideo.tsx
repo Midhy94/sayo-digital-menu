@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { useLanguage } from '../contexts/LanguageContext'
 import './IntroVideo.css'
 
-const LOGOS = { en: '/assets/Logo_lgt_EN.svg', ar: '/assets/Logo_lgt_AR.svg' } as const
+const LOGO_EN = '/assets/Logo_lgt_EN.svg'
+const LOGO_AR = '/assets/Logo_lgt_AR.svg'
 
 interface IntroVideoProps {
   onContinue: () => void
@@ -10,8 +10,6 @@ interface IntroVideoProps {
 
 export function IntroVideo({ onContinue }: IntroVideoProps) {
   const { t } = useTranslation()
-  const { language } = useLanguage()
-  const logoSrc = LOGOS[language === 'ar' ? 'ar' : 'en']
 
   return (
     <div className="intro-video" role="presentation">
@@ -28,7 +26,14 @@ export function IntroVideo({ onContinue }: IntroVideoProps) {
       <div className="intro-video__content">
         <div className="intro-video__logo-wrap">
           <img
-            src={logoSrc}
+            src={LOGO_EN}
+            alt="SAYO"
+            className="intro-video__logo"
+            width={200}
+            height={96}
+          />
+          <img
+            src={LOGO_AR}
             alt="SAYO"
             className="intro-video__logo"
             width={200}

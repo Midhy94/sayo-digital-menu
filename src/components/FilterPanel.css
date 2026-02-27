@@ -13,7 +13,7 @@
     background: var(--sayo-surface);
     padding: var(--ios-space-4) var(--ios-space-4);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     gap: var(--ios-space-4);
@@ -109,12 +109,21 @@
     flex-direction: column;
     gap: 0;
     min-width: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .filter-panel__filter-block .filter-panel__sidebar-title--section {
     padding-bottom: var(--ios-space-2);
+    flex-shrink: 0;
+  }
+
+  .filter-panel__filter-block .filter-panel__option-list {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .filter-panel__nav-list {
@@ -207,6 +216,23 @@
   .filter-panel__option-link--active {
     color: var(--sayo-accent);
     background: rgba(212, 165, 116, 0.12);
+  }
+
+  .filter-panel__option-list-divider {
+    height: 1px;
+    background: var(--sayo-border);
+    margin: var(--ios-space-2) 0;
+    list-style: none;
+  }
+
+  .filter-panel__option-list-label {
+    font-size: var(--ios-text-caption);
+    font-weight: 600;
+    color: var(--sayo-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--ios-space-2) var(--ios-space-3);
+    display: block;
   }
 
   .filter-panel__sidebar-footer {
@@ -899,6 +925,17 @@
   font-weight: 600;
   color: var(--sayo-text);
   margin-bottom: var(--ios-space-1);
+}
+
+.filter-panel__drawer-section-subtitle {
+  font-size: var(--ios-text-caption);
+  font-weight: 600;
+  color: var(--sayo-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--ios-space-2) var(--ios-space-4);
+  display: block;
+  margin-top: var(--ios-space-2);
 }
 
 .filter-panel__select--full {

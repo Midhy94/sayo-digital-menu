@@ -14,9 +14,11 @@ interface MenuContextValue {
   dishes: Dish[]
   filteredDishes: Dish[]
   filters: MenuFilters
+  availableSubcategories: { key: string; titleKey: string }[]
   viewMode: ViewMode
   setViewMode: (mode: ViewMode) => void
   setCategory: (category: string) => void
+  setSubcategory: (subcategory: string) => void
   setDiet: (diet: Diet) => void
   setPriceRange: (range: PriceRange) => void
   setSortBy: (sort: MenuFilters['sortBy']) => void
@@ -32,6 +34,7 @@ interface MenuContextValue {
 
 const defaultFilters: MenuFilters = {
   category: 'all',
+  subcategory: 'all',
   diet: 'all',
   priceRange: 'all',
   sortBy: 'default',
@@ -40,26 +43,37 @@ const defaultFilters: MenuFilters = {
 
 const MenuContext = createContext<MenuContextValue | null>(null)
 
+const categoryOrder = [
+  'appetizers', 'soups', 'salads', 'sushi', 'dimSum', 'robata', 'mains', 'indian', 'desserts', 'drinks', 'combos',
+] as const
+
+function getDishesForMenu(dishes: Dish[], menuCategory: string): Dish[] {
+  if (menuCategory === 'all') return dishes
+  if (menuCategory === 'food') return dishes.filter((d) => d.categoryKey !== 'drinks')
+  if (menuCategory === 'beverages') return dishes.filter((d) => d.categoryKey === 'drinks')
+  if (menuCategory === 'kids') return dishes.filter((d) => d.menuGroup === 'kids')
+  return dishes
+}
+
+function getAvailableSubcategories(dishes: Dish[], menuCategory: string): { key: string; titleKey: string }[] {
+  const menuDishes = getDishesForMenu(dishes, menuCategory)
+  const keys = new Set<string>()
+  for (const d of menuDishes) {
+    keys.add(d.categoryKey)
+  }
+  const ordered = categoryOrder.filter((k) => keys.has(k))
+  const extra = [...keys].filter((k) => !categoryOrder.includes(k as any))
+  return [...ordered, ...extra].map((key) => ({ key, titleKey: `categories.${key}` }))
+}
+
 function filterAndSort(
   dishes: Dish[],
   filters: MenuFilters,
 ): Dish[] {
-  let result = [...dishes]
+  let result = getDishesForMenu(dishes, filters.category)
 
-  if (filters.category !== 'all') {
-    if (filters.category === 'food') {
-      result = result.filter((d) => d.categoryKey !== 'drinks')
-    } else if (filters.category === 'beverages') {
-      result = result.filter((d) => d.categoryKey === 'drinks')
-    } else if (filters.category === 'kids') {
-      result = result.filter((d) => d.menuGroup === 'kids')
-    } else if (filters.category === 'starItems') {
-      result = result.filter((d) => d.isStar)
-    } else if (filters.category === 'chefSpecialties') {
-      result = result.filter((d) => d.isChefSpecialty)
-    } else {
-      result = result.filter((d) => d.categoryKey === filters.category)
-    }
+  if (filters.subcategory !== 'all') {
+    result = result.filter((d) => d.categoryKey === filters.subcategory)
   }
 
   if (filters.chefSpecialOnly) {
@@ -112,7 +126,11 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [modalDish, setModalDish] = useState<Dish | null>(null)
 
   const setCategory = useCallback((category: string) => {
-    setFilters((f) => ({ ...f, category }))
+    setFilters((f) => ({ ...f, category, subcategory: 'all' }))
+  }, [])
+
+  const setSubcategory = useCallback((subcategory: string) => {
+    setFilters((f) => ({ ...f, subcategory }))
   }, [])
 
   const setDiet = useCallback((diet: Diet) => {
@@ -147,6 +165,10 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     return filterAndSort(menuDishes, filters)
   }, [filters])
 
+  const availableSubcategories = useMemo(() => {
+    return getAvailableSubcategories(menuDishes, filters.category)
+  }, [filters.category])
+
   const goToPrevDish = useCallback(() => {
     if (!modalDish) return
     const idx = filteredDishes.findIndex((d) => d.id === modalDish.id)
@@ -166,9 +188,11 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
       dishes: menuDishes,
       filteredDishes,
       filters,
+      availableSubcategories,
       viewMode,
       setViewMode,
       setCategory,
+      setSubcategory,
       setDiet,
       setPriceRange,
       setSortBy,
@@ -184,8 +208,10 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     [
       filteredDishes,
       filters,
+      availableSubcategories,
       viewMode,
       setCategory,
+      setSubcategory,
       setDiet,
       setPriceRange,
       setSortBy,

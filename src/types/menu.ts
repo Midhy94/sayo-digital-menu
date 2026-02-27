@@ -30,6 +30,7 @@ export interface Dish {
 
 export interface MenuFilters {
   category: string
+  subcategory: string
   diet: Diet
   priceRange: PriceRange
   priceMin?: number

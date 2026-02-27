@@ -46,14 +46,19 @@
 }
 
 .intro-video__logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ios-space-4);
+  flex-wrap: wrap;
   line-height: 0;
 }
 
 .intro-video__logo {
   display: block;
   width: auto;
-  height: 72px;
-  max-width: 220px;
+  height: 56px;
+  max-width: 140px;
   object-fit: contain;
   object-position: center;
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
@@ -61,8 +66,8 @@
 
 @media (min-width: 600px) {
   .intro-video__logo {
-    height: 96px;
-    max-width: 280px;
+    height: 72px;
+    max-width: 180px;
   }
 }
 
