@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { ThemeIcon } from './ThemeIcon'
 import { ViewIcon } from './ViewIcon'
+import { FilterIcon } from './FilterIcon'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import type { Diet, MenuFilters } from '../types/menu'
 import './FilterPanel.css'
@@ -92,6 +93,12 @@ export function FilterPanel() {
       document.removeEventListener('sayo-open-filters' as any, handler)
     }
   }, [])
+
+  // Notify when drawer opens/closes so BottomBar can show active state
+  useEffect(() => {
+    const event = drawerOpen ? 'sayo-filters-opened' : 'sayo-filters-closed'
+    document.dispatchEvent(new CustomEvent(event))
+  }, [drawerOpen])
 
   return (
     <>
@@ -243,7 +250,9 @@ export function FilterPanel() {
           aria-expanded={drawerOpen}
           aria-label={t('filters.showFilters')}
         >
-          <span className="filter-panel__drawer-icon">⚙</span>
+          <span className="filter-panel__drawer-icon" aria-hidden="true">
+            <FilterIcon />
+          </span>
           <span>{t('filters.showFilters')}</span>
           {hasActiveFilters && (
             <span className="filter-panel__drawer-badge" aria-hidden="true">
@@ -390,12 +399,7 @@ export function FilterPanel() {
                       aria-pressed={viewMode === 'grid'}
                       aria-label={t('filters.viewGrid')}
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <rect x="3" y="3" width="7" height="7" rx="1" />
-                        <rect x="14" y="3" width="7" height="7" rx="1" />
-                        <rect x="3" y="14" width="7" height="7" rx="1" />
-                        <rect x="14" y="14" width="7" height="7" rx="1" />
-                      </svg>
+                      <ViewIcon viewMode="list" />
                     </button>
                     <button
                       type="button"
@@ -404,14 +408,7 @@ export function FilterPanel() {
                       aria-pressed={viewMode === 'list'}
                       aria-label={t('filters.viewList')}
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <line x1="8" y1="6" x2="21" y2="6" />
-                        <line x1="8" y1="12" x2="21" y2="12" />
-                        <line x1="8" y1="18" x2="21" y2="18" />
-                        <line x1="3" y1="6" x2="3.01" y2="6" />
-                        <line x1="3" y1="12" x2="3.01" y2="12" />
-                        <line x1="3" y1="18" x2="3.01" y2="18" />
-                      </svg>
+                      <ViewIcon viewMode="grid" />
                     </button>
                   </div>
                 </div>

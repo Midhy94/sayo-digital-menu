@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -42,6 +43,7 @@ const defaultFilters: MenuFilters = {
 }
 
 const MenuContext = createContext<MenuContextValue | null>(null)
+const VIEW_MODE_KEY = 'sayo-view-mode'
 
 const categoryOrder = [
   'appetizers', 'soups', 'salads', 'sushi', 'dimSum', 'robata', 'mains', 'indian', 'desserts', 'drinks', 'combos',
@@ -120,10 +122,47 @@ function filterAndSort(
   return result
 }
 
+function getInitialViewMode(): ViewMode {
+  if (typeof window === 'undefined') return 'grid'
+  try {
+    const stored = localStorage.getItem(VIEW_MODE_KEY)
+    if (stored === 'list' || stored === 'grid') return stored
+  } catch {
+    /* ignore */
+  }
+  return window.matchMedia('(max-width: 900px)').matches ? 'list' : 'grid'
+}
+
 export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [filters, setFilters] = useState<MenuFilters>(defaultFilters)
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
+  const [viewMode, setViewModeState] = useState<ViewMode>(getInitialViewMode)
   const [modalDish, setModalDish] = useState<Dish | null>(null)
+
+  const setViewMode = useCallback((mode: ViewMode) => {
+    setViewModeState(mode)
+    try {
+      localStorage.setItem(VIEW_MODE_KEY, mode)
+    } catch {
+      /* ignore */
+    }
+  }, [])
+
+  // Correct default on mobile when no stored preference – viewport can be wrong on initial load
+  useEffect(() => {
+    const applyMobileDefault = () => {
+      try {
+        if (localStorage.getItem(VIEW_MODE_KEY)) return
+      } catch {
+        return
+      }
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        setViewModeState('list')
+      }
+    }
+    applyMobileDefault()
+    const t = setTimeout(applyMobileDefault, 250)
+    return () => clearTimeout(t)
+  }, [])
 
   const setCategory = useCallback((category: string) => {
     setFilters((f) => ({ ...f, category, subcategory: 'all' }))

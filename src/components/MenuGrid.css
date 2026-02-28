@@ -29,7 +29,7 @@
   font-family: var(--font-display);
   font-size: var(--ios-text-title1);
   font-weight: 800;
-  color: #000000;
+  color: var(--sayo-text);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin: 0 0 var(--ios-space-4) 0;
@@ -76,36 +76,36 @@
   font-size: var(--ios-text-callout);
 }
 
-/* List view (Amazon-style rows)
-   On small screens: 1 per row
-   On wider screens: 2 cards per row */
-.menu-grid--list .menu-grid__list {
-  display: grid;
-  grid-template-columns: 1fr;
+/* List view (Amazon-style horizontal rows)
+   Overrides grid layout – 1 col on mobile, 2 on wider screens */
+.menu-grid.menu-grid--list .menu-grid__list {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
   gap: var(--ios-space-3);
 }
 
 @media (min-width: 768px) {
-  .menu-grid--list .menu-grid__list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .menu-grid.menu-grid--list .menu-grid__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-.menu-grid--list .menu-grid__list .dish-card .dish-card__trigger {
-  display: flex;
-  flex-direction: row;
+/* Horizontal card layout: image left, content right */
+.menu-grid.menu-grid--list .menu-grid__list .dish-card .dish-card__trigger {
+  display: flex !important;
+  flex-direction: row !important;
   align-items: stretch;
   text-align: start;
 }
 
-.menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
+.menu-grid.menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
   width: 140px;
   min-width: 140px;
   aspect-ratio: 1;
   flex-shrink: 0;
 }
 
-.menu-grid--list .menu-grid__list .dish-card .dish-card__body {
+.menu-grid.menu-grid--list .menu-grid__list .dish-card .dish-card__body {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -114,12 +114,12 @@
   padding: var(--ios-space-4);
 }
 
-.menu-grid--list .menu-grid__list .dish-card .dish-card__desc {
+.menu-grid.menu-grid--list .menu-grid__list .dish-card .dish-card__desc {
   -webkit-line-clamp: 2;
 }
 
 @media (min-width: 600px) {
-  .menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
+  .menu-grid.menu-grid--list .menu-grid__list .dish-card .dish-card__image-wrap {
     width: 180px;
     min-width: 180px;
   }
